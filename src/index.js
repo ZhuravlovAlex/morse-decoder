@@ -37,8 +37,38 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
+function updateMorseTable (table) {
+    const result = {};
+    for (const key in table) {
+        let newKey = '';
+        key.split('').map(char => {
+            newKey += char === '-' ? '11' : '10';
+        });
+
+        result[newKey] = table[key];
+    };
+
+    return result;
+};
+
 function decode(expr) {
-    // write your solution here
+    const table = updateMorseTable(MORSE_TABLE);
+    
+    let result = '';
+    for (let i = 0; i <= expr.length / 10; i += 1) {
+        
+        let symbol = expr.substring((10 * i), 10 * (i + 1));
+
+        let index = symbol.indexOf("1");
+        if (index === - 1) {
+            result += " ";
+            continue;
+        }
+                
+        result += table[symbol.substring(index)];
+    }
+    
+    return result.trim();
 }
 
 module.exports = {
